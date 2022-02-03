@@ -6,15 +6,15 @@ public class ArrayStorage {
 
     void clear() {
         int i = 0;
-        while (i < storage.length && storage[i]!=null) {
-            storage[i++]=null;
+        while (i < storage.length && storage[i] != null) {
+            storage[i++] = null;
         }
     }
 
     void save(Resume resume) {
-        for(int i = 0; i < storage.length; i++) {
-            if (storage[i]==null){
-                storage[i]=resume;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
+                storage[i] = resume;
                 break;
             }
         }
@@ -22,7 +22,7 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         int i = 0;
-        while (i< storage.length && storage[i]!=null) {
+        while (i < storage.length && storage[i] != null) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -34,13 +34,13 @@ public class ArrayStorage {
     void delete(String uuid) {
         boolean found = false;
         int i = 0;
-        while (i< storage.length && storage[i]!=null) {
-            if (!found && storage[i].uuid.equals(uuid)){
-                storage[i]=null;
-                found=true;
+        while (i < storage.length && storage[i] != null) {
+            if (!found && storage[i].uuid.equals(uuid)) {
+                storage[i] = null;
+                found = true;
             }
-            if (found && i < (storage.length-1)){
-                storage[i]=storage[i+1];
+            if (found && i < (storage.length - 1)) {
+                storage[i] = storage[i + 1];
             }
             i++;
         }
@@ -51,17 +51,17 @@ public class ArrayStorage {
      */
     Resume[] getAll() {
         int resumeCount = 0;
-        while (resumeCount< storage.length && storage[resumeCount]!=null) {
+        while (resumeCount < storage.length && storage[resumeCount] != null) {
             resumeCount++;
         }
         Resume[] allResumes = new Resume[resumeCount];
-        System.arraycopy(storage,0,allResumes,0,resumeCount);
+        System.arraycopy(storage, 0, allResumes, 0, resumeCount);
         return allResumes;
     }
 
     int size() {
         int size = 0;
-        while (size< storage.length && storage[size]!=null) {
+        while (size < storage.length && storage[size] != null) {
             size++;
         }
         return size;
