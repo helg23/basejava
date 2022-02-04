@@ -10,14 +10,14 @@ public class ArrayStorage {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
-        size=0;
+        size = 0;
     }
 
     void save(Resume resume) {
         if (size == storage.length) {
             return;  //не добавляем если массив заполнен
         }
-        if (this.get(resume.uuid)!= null){
+        if (this.get(resume.uuid) != null) {
             return; //не добавляем если элемент уже есть
         }
         storage[size++] = resume;
