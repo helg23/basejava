@@ -4,27 +4,27 @@
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
-    int size = 0; //счетчик непустых элементов
+    int size; //счетчик непустых элементов
 
     void clear() {
-        for (int i = 0; i < this.size; i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
-        this.size=0;
+        size=0;
     }
 
     void save(Resume resume) {
-        if (this.size == storage.length) {
+        if (size == storage.length) {
             return;  //не добавляем если массив заполнен
         }
         if (this.get(resume.uuid)!= null){
             return; //не добавляем если элемент уже есть
         }
-        storage[this.size++] = resume;
+        storage[size++] = resume;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < this.size; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -34,7 +34,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         boolean found = false;
-        for (int i = 0; i < this.size; i++) {
+        for (int i = 0; i < size; i++) {
             if (!found && storage[i].uuid.equals(uuid)) {
                 storage[i] = null;
                 found = true;
@@ -43,19 +43,21 @@ public class ArrayStorage {
                 storage[i] = storage[i + 1];
             }
         }
-        this.size--;
+        if (found) {
+            size--;
+        }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] allResumes = new Resume[this.size];
-        System.arraycopy(storage, 0, allResumes, 0, this.size);
+        Resume[] allResumes = new Resume[size];
+        System.arraycopy(storage, 0, allResumes, 0, size);
         return allResumes;
     }
 
     int size() {
-        return this.size;
+        return size;
     }
 }
