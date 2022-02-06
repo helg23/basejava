@@ -39,7 +39,7 @@ public class ArrayStorage {
                 storage[i] = null;
                 found = true;
             }
-            if (found && i < (storage.length - 1) && storage[i + 1] != null) {
+            if (found && i < (storage.length - 1)) {
                 storage[i] = storage[i + 1];
             }
         }
