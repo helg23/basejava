@@ -10,19 +10,21 @@ import java.util.Arrays;
 public class ArrayStorage {
     private final Resume[] storage = new Resume[10000];
 
-    private int size; //счетчик непустых элементов
+    //счетчик количества резюме
+    private int size;
 
-    private final int NOT_FOUND = -1; //номер ненайденного элемента
+    //номер ненайденного элемента
+    private final int NOT_FOUND = -1;
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("Массив резюме заполнен. Добавление невозможно.");
-        } else if (find(resume.getUuid()) != NOT_FOUND) {
+        } else if (findIndex(resume.getUuid()) != NOT_FOUND) {
             System.out.println("Резюме " + resume.getUuid() + " уже добавлено.");
         } else {
             storage[size++] = resume;
@@ -30,32 +32,32 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = find(uuid);
+        int index = findIndex(uuid);
         if (index == NOT_FOUND) {
             System.out.println("Резюме " + uuid + " не найдено");
             return null;
-        } else {
-            return storage[index];
         }
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        int index = find(uuid);
+        int index = findIndex(uuid);
         if (index == NOT_FOUND) {
             System.out.println("Резюме " + uuid + " не найдено");
         } else {
             storage[index] = null;
-            for (int i = index; i < size; i++) {
-                if (i < (storage.length - 1)) {
-                    storage[i] = storage[i + 1];
-                }
-            }
             size--;
+            //если удаляемый элемент последний, то никаких действий больше не требуется
+            if (index == size) {
+                return;
+            }
+            //если не последний, то смещаем оставшуюся часть массива на 1 ближе к началу
+            System.arraycopy(storage, index + 1, storage, index, size - index);
         }
     }
 
     public void update(Resume resume) {
-        int index = find(resume.getUuid());
+        int index = findIndex(resume.getUuid());
         if (index == NOT_FOUND) {
             System.out.println("Резюме " + resume.getUuid() + " не найдено");
         } else {
@@ -75,7 +77,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private Integer find(String uuid) {
+    private Integer findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
