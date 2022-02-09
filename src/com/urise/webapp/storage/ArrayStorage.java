@@ -8,9 +8,11 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private final Resume[] storage = new Resume[10000];
 
-    int size; //счетчик непустых элементов
+    private int size; //счетчик непустых элементов
+
+    private final int NOT_FOUND = -1; //номер ненайденного элемента
 
     public void clear() {
         Arrays.fill(storage, 0, size - 1, null);
@@ -20,61 +22,44 @@ public class ArrayStorage {
     public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("Массив резюме заполнен. Добавление невозможно.");
-        } else if (getByUuid(resume.uuid) != null) {
-            System.out.println("Резюме уже добавлено.");
+        } else if (find(resume.getUuid()) != NOT_FOUND) {
+            System.out.println("Резюме "+resume.getUuid()+" уже добавлено.");
         } else {
             storage[size++] = resume;
         }
     }
 
     public Resume get(String uuid) {
-        Resume resume = getByUuid(uuid);
-        if (resume != null) {
-            return resume;
-        } else {
-            System.out.println("Резюме не найдено");
+        int index=find(uuid);
+        if (index==NOT_FOUND) {
+            System.out.println("Резюме "+uuid+" не найдено");
             return null;
+        } else {
+            return storage[index];
         }
-    }
-
-    private Resume getByUuid(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
-        }
-        return null;
     }
 
     public void delete(String uuid) {
-        boolean found = false;
-        for (int i = 0; i < size; i++) {
-            if (!found && storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
-                found = true;
+        int index=find(uuid);
+        if (index==NOT_FOUND) {
+            System.out.println("Резюме "+uuid+" не найдено");
+        }else {
+            storage[index] = null;
+            for (int i = index; i < size; i++) {
+                if (i < (storage.length - 1)) {
+                    storage[i] = storage[i + 1];
+                }
             }
-            if (found && i < (storage.length - 1)) {
-                storage[i] = storage[i + 1];
-            }
-        }
-        if (found) {
             size--;
-        } else {
-            System.out.println("Резюме не найдено");
         }
     }
 
     public void update(Resume resume) {
-        boolean found = false;
-        for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(resume.uuid)) {
-                storage[i] = resume;
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("Резюме не найдено");
+        int index=find(resume.getUuid());
+        if (index==NOT_FOUND) {
+            System.out.println("Резюме "+resume.getUuid()+" не найдено");
+        }else {
+            storage[index]=resume;
         }
     }
 
@@ -88,5 +73,14 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private Integer find(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return NOT_FOUND;
     }
 }
