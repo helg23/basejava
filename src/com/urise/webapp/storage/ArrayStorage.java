@@ -13,7 +13,7 @@ public class ArrayStorage {
     //счетчик количества резюме
     private int size;
 
-    //номер ненайденного элемента
+    //код состояния, когда резюме не найдено
     private final int NOT_FOUND = -1;
 
     public void clear() {
@@ -45,10 +45,10 @@ public class ArrayStorage {
         if (index == NOT_FOUND) {
             System.out.println("Резюме " + uuid + " не найдено");
         } else {
-            storage[index] = null;
             size--;
-            //если удаляемый элемент последний, то никаких действий больше не требуется
+            //если удаляемый элемент последний, то только очищаем его
             if (index == size) {
+                storage[index] = null;
                 return;
             }
             //если не последний, то смещаем оставшуюся часть массива на 1 ближе к началу
@@ -77,7 +77,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private Integer findIndex(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
