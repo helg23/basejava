@@ -16,14 +16,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    public void save(Resume resume) {
-        if (size == storage.length) {
-            System.out.println("Массив резюме заполнен. Добавление невозможно.");
-        } else if (findIndex(resume.getUuid()) >= 0) {
-            System.out.println("Резюме " + resume.getUuid() + " уже добавлено.");
-        } else {
-            storage[size++] = resume;
-        }
+    protected void insert(Resume resume, int insertionPoint) {
+        storage[size++] = resume;
     }
-
 }

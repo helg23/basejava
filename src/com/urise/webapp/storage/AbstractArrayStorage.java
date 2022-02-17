@@ -32,6 +32,20 @@ public abstract class AbstractArrayStorage implements Storage {
         return storage[index];
     }
 
+    public void save(Resume resume) {
+        if (size == storage.length) {
+            System.out.println("Массив резюме заполнен. Добавление невозможно.");
+        } else {
+            int searchResult = (findIndex(resume.getUuid()));
+            if (searchResult >= 0) {
+                System.out.println("Резюме " + resume.getUuid() + " уже добавлено.");
+            } else {
+                int insertionPoint = -searchResult - 1;
+                insert(resume, insertionPoint);
+            }
+        }
+    }
+
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
@@ -62,4 +76,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int findIndex(String uuid);
+
+    protected abstract void insert(Resume resume, int searchResult);
 }

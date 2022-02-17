@@ -4,7 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
+public class SortedArrayStorage extends AbstractArrayStorage {
 
     protected int findIndex(String uuid) {
         Resume searchKey = new Resume();
@@ -12,19 +12,9 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
-    public void save(Resume resume) {
-        if (size == storage.length) {
-            System.out.println("Массив резюме заполнен. Добавление невозможно.");
-        } else {
-            int index=(findIndex(resume.getUuid()));
-            if (index >=0) {
-                System.out.println("Резюме " + resume.getUuid() + " уже добавлено.");
-            } else {
-                index=-index-1;
-                System.arraycopy(storage, index, storage, index + 1, size - index);
-                storage[index] = resume;
-                size++;
-            }
-        }
+    protected void insert(Resume resume, int insertionPoint) {
+        System.arraycopy(storage, insertionPoint, storage, insertionPoint + 1, size - insertionPoint);
+        storage[insertionPoint] = resume;
+        size++;
     }
 }
