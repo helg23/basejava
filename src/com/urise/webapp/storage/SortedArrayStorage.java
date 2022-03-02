@@ -6,15 +6,17 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+    @Override
     protected int findIndex(String uuid) {
-        Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
+        Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
-    protected void insert(Resume resume, int insertionPoint) {
-        System.arraycopy(storage, insertionPoint, storage, insertionPoint + 1, size - insertionPoint);
-        storage[insertionPoint] = resume;
+    @Override
+    protected void insert(Resume resume, int index) {
+        int insertPoint = -index - 1;
+        System.arraycopy(storage, insertPoint, storage, insertPoint + 1, size - insertPoint);
+        storage[insertPoint] = resume;
         size++;
     }
 }
