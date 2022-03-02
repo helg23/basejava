@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 
 /**
  * Array based storage for Resumes
@@ -39,37 +38,35 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         if (size == storage.length) {
             throw new OverflowStorageException(resume.getUuid());
-        } else {
-            int index = (findIndex(resume.getUuid()));
-            if (index >= 0) {
-                throw new ExistStorageException(resume.getUuid());
-            } else {
-                insert(resume, index);
-            }
         }
+        int index = (findIndex(resume.getUuid()));
+        if (index >= 0) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        insert(resume, index);
+        size++;
     }
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
             throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
         }
+        storage[index] = resume;
+
     }
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
-        } else {
-            size--;
-            if (index == size) {
-                storage[index] = null;
-                return;
-            }
-            System.arraycopy(storage, index + 1, storage, index, size - index);
         }
+        size--;
+        if (index == size) {
+            storage[index] = null;
+            return;
+        }
+        System.arraycopy(storage, index + 1, storage, index, size - index);
     }
 
     public Resume[] getAll() {
