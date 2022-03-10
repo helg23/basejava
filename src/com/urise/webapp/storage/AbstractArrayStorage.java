@@ -5,13 +5,11 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -28,39 +26,24 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
+        return storage[getIndex(uuid, true)];
     }
 
     public void save(Resume resume) {
         if (size == storage.length) {
             throw new OverflowStorageException(resume.getUuid());
         }
-        int index = (findIndex(resume.getUuid()));
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        insert(resume, index);
+        insert(resume, getIndex(resume.getUuid(), false));
         size++;
     }
 
     public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-        storage[index] = resume;
+        storage[getIndex(resume.getUuid(), true)] = resume;
 
     }
 
     public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+        int index = getIndex(uuid, true);
         size--;
         if (index == size) {
             storage[index] = null;
@@ -72,8 +55,6 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
-
-    protected abstract int findIndex(String uuid);
 
     protected abstract void insert(Resume resume, int index);
 }
