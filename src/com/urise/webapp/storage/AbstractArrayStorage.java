@@ -10,7 +10,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
@@ -25,36 +24,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume get(String uuid) {
-        return storage[getIndex(uuid, true)];
-    }
-
-    public void save(Resume resume) {
-        if (size == storage.length) {
-            throw new OverflowStorageException(resume.getUuid());
-        }
-        insert(resume, getIndex(resume.getUuid(), false));
-        size++;
-    }
-
-    public void update(Resume resume) {
-        storage[getIndex(resume.getUuid(), true)] = resume;
-
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid, true);
-        size--;
-        if (index == size) {
-            storage[index] = null;
-            return;
-        }
-        System.arraycopy(storage, index + 1, storage, index, size - index);
-    }
-
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    protected abstract void insert(Resume resume, int index);
+    protected abstract void insert(int index,Resume resume);
+
+    @Override
+    protected Resume getResume(int index) {
+        return storage[index];
+    }
+
+    @Override
+    protected void updateResume(int index, Resume resume) {
+        storage[index] = resume;
+    }
+
+    @Override
+    protected void removeResume(int index) {
+        System.arraycopy(storage, index + 1, storage, index, size - index);
+        size--;
+    }
+
+    @Override
+    protected void saveResume(int index, Resume resume) {
+        insert(index,resume);
+        size++;
+    }
 }
