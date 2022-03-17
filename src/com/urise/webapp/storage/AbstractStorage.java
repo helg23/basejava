@@ -6,7 +6,7 @@ import com.urise.webapp.exception.OverflowStorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+
 
     public Resume get(String uuid) {
         return getResume(getIndex(uuid, true));
@@ -21,9 +21,6 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        if (size() == STORAGE_LIMIT) {
-            throw new OverflowStorageException(resume.getUuid());
-        }
         saveResume(getIndex(resume.getUuid(), false), resume);
     }
 
