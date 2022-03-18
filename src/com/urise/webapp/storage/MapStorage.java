@@ -3,9 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    protected HashMap<Integer, Resume> storage = new HashMap<>();
+    protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public int size() {
@@ -23,32 +24,27 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int findIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+    protected int findKey(String uuid) {
+        return storage.get(uuid) == null ? -1 : 1;
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return storage.get(index);
+    protected Resume getResume(int key, String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    protected void updateResume(int index, Resume resume) {
-        storage.put(index, resume);
+    protected void updateResume(int key, Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void removeResume(int index) {
-        storage.remove(index);
+    protected void removeResume(int key, String uuid) {
+        storage.remove(uuid);
     }
 
     @Override
-    protected void saveResume(int index, Resume resume) {
-        storage.put(storage.size(), resume);
+    protected void saveResume(int key, Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 }

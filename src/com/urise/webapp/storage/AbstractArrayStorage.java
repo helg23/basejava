@@ -29,10 +29,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    protected abstract void insert(int index,Resume resume);
+    protected abstract void insert(int index, Resume resume);
 
     @Override
-    protected Resume getResume(int index) {
+    protected Resume getResume(int index, String uuid) {
         return storage[index];
     }
 
@@ -42,17 +42,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeResume(int index) {
+    protected void removeResume(int index, String uuid) {
         System.arraycopy(storage, index + 1, storage, index, size - index);
         size--;
     }
 
     @Override
     protected void saveResume(int index, Resume resume) {
-        if (size() == STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             throw new OverflowStorageException(resume.getUuid());
         }
-        insert(index,resume);
+        insert(index, resume);
         size++;
     }
 }

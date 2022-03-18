@@ -2,46 +2,45 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.OverflowStorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
 
     public Resume get(String uuid) {
-        return getResume(getIndex(uuid, true));
+        return getResume(searchKey(uuid, true), uuid);
     }
 
     public void update(Resume resume) {
-        updateResume(getIndex(resume.getUuid(), true), resume);
+        updateResume(searchKey(resume.getUuid(), true), resume);
     }
 
     public void delete(String uuid) {
-        removeResume(getIndex(uuid, true));
+        removeResume(searchKey(uuid, true), uuid);
     }
 
     public void save(Resume resume) {
-        saveResume(getIndex(resume.getUuid(), false), resume);
+        saveResume(searchKey(resume.getUuid(), false), resume);
     }
 
-    protected abstract int findIndex(String uuid);
+    protected abstract int findKey(String uuid);
 
-    protected abstract Resume getResume(int index);
+    protected abstract Resume getResume(int key, String uuid);
 
-    protected abstract void updateResume(int index, Resume resume);
+    protected abstract void updateResume(int key, Resume resume);
 
-    protected abstract void removeResume(int index);
+    protected abstract void removeResume(int key, String uuid);
 
-    protected abstract void saveResume(int index, Resume resume);
+    protected abstract void saveResume(int key, Resume resume);
 
-    private int getIndex(String uuid, Boolean mustExist) {
-        int index = findIndex(uuid);
-        if (mustExist && index < 0) {
+    private int searchKey(String uuid, boolean mustExist) {
+        int key = findKey(uuid);
+        if (mustExist && key < 0) {
             throw new NotExistStorageException(uuid);
         }
-        if (!mustExist && index >= 0) {
+        if (!mustExist && key >= 0) {
             throw new ExistStorageException(uuid);
         }
-        return index;
+        return key;
     }
 }
