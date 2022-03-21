@@ -48,6 +48,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
+
     @Override
     protected <T> void saveResume(T index, Resume resume) {
         if (size == STORAGE_LIMIT) {
