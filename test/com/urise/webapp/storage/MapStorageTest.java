@@ -11,8 +11,9 @@ public class MapStorageTest extends AbstractStorageTest {
     @Test
     @Override
     public void getAll() {
-        for(Resume r : new Resume[]{RESUME_1, RESUME_2, RESUME_3}){
+        for (Resume r : new Resume[]{RESUME_1, RESUME_2, RESUME_3}) {
             assertGet(r);
         }
+        assertSize(3);
     }
 }
