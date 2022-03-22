@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -32,29 +32,27 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void insert(int index, Resume resume);
 
     @Override
-    protected <T> Resume getResume(T index) {
-        return storage[(Integer) index];
+    protected Resume getResume(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected <T> void updateResume(T index, Resume resume) {
-        storage[(Integer) index] = resume;
+    protected void updateResume(Integer index, Resume resume) {
+        storage[index] = resume;
     }
 
     @Override
-    protected <T> void removeResume(T key) {
-        int index = (Integer) key;
+    protected void removeResume(Integer index) {
         System.arraycopy(storage, index + 1, storage, index, size - index);
         size--;
     }
 
-
     @Override
-    protected <T> void saveResume(T index, Resume resume) {
+    protected void saveResume(Integer index, Resume resume) {
         if (size == STORAGE_LIMIT) {
             throw new OverflowStorageException(resume.getUuid());
         }
-        insert((Integer) index, resume);
+        insert(index, resume);
         size++;
     }
 }
