@@ -55,4 +55,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         insert(index, resume);
         size++;
     }
+
+    @Override
+    protected boolean checkKeyExist(Integer key) {
+        return key >= 0;
+    }
 }

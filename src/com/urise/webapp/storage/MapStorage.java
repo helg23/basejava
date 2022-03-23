@@ -47,4 +47,9 @@ public class MapStorage extends AbstractStorage<String> {
     protected void saveResume(String key, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
+
+    @Override
+    protected boolean checkKeyExist(String key) {
+        return !key.equals("");
+    }
 }

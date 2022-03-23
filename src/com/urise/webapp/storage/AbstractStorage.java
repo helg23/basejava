@@ -34,22 +34,15 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected SK searchKey(String uuid, boolean mustExist) {
         SK key = findKey(uuid);
-        if (key instanceof Integer) {
-            if (mustExist && (Integer) key < 0) {
-                throw new NotExistStorageException(uuid);
-            }
-            if (!mustExist && (Integer) key >= 0) {
-                throw new ExistStorageException(uuid);
-            }
+        boolean keyExists = checkKeyExist(key);
+        if (mustExist && !keyExists) {
+            throw new NotExistStorageException(uuid);
         }
-        if (key instanceof String) {
-            if (mustExist && key.equals("")) {
-                throw new NotExistStorageException(uuid);
-            }
-            if (!mustExist && !key.equals("")) {
-                throw new ExistStorageException(uuid);
-            }
+        if (!mustExist && keyExists) {
+            throw new ExistStorageException(uuid);
         }
         return key;
     }
+
+    protected abstract boolean checkKeyExist(SK key);
 }

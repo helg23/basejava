@@ -34,6 +34,11 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
+    protected boolean checkKeyExist(Integer key) {
+        return key >= 0;
+    }
+
+    @Override
     protected Resume getResume(Integer index) {
         return storage.get(index);
     }
