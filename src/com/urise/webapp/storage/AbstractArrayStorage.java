@@ -4,6 +4,7 @@ import com.urise.webapp.exception.OverflowStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -25,8 +26,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    public List<Resume> asList() {
+        return Arrays.asList(Arrays.copyOf(storage, size));
     }
 
     protected abstract void insert(int index, Resume resume);

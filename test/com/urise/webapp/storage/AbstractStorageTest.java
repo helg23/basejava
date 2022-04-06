@@ -6,6 +6,8 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
@@ -16,16 +18,20 @@ public abstract class AbstractStorageTest {
     protected static final String UUID_3 = "uuid3";
     protected static final String UUID_4 = "uuid4";
 
+    protected static final String FULL_NAME1 = "fn1";
+    protected static final String FULL_NAME2 = "fn2";
+    protected static final String FULL_NAME3 = "fn3";
+
     protected static final Resume RESUME_1;
     protected static final Resume RESUME_2;
     protected static final Resume RESUME_3;
     protected static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1,FULL_NAME3);
+        RESUME_2 = new Resume(UUID_2,FULL_NAME2);
+        RESUME_3 = new Resume(UUID_3,FULL_NAME1);
+        RESUME_4 = new Resume(UUID_4,FULL_NAME1);
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -99,8 +105,9 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, storage.getAll());
+    public void getAllSorted() {
+       storage.save(RESUME_4);
+       assertArrayEquals(new Resume[]{RESUME_3, RESUME_4, RESUME_2, RESUME_1}, storage.getAllSorted().toArray(new Resume[0]));
     }
 
     protected void assertGet(Resume r) {
