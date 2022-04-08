@@ -29,10 +29,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     public List<Resume> getAllSorted() {
         List<Resume> storageList=asList();
-        storageList.sort((a,b)-> (a.getFullName().equals(b.getFullName()))
-            ? a.getUuid().compareTo(b.getUuid())
-            : a.getFullName().compareTo(b.getFullName())
-        );
+        storageList.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         return storageList;
     }
 
