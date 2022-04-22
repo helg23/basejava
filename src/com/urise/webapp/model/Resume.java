@@ -44,4 +44,9 @@ public class Resume implements Comparable<Resume> {
         Resume resume = (Resume) o;
         return Objects.equals(getUuid(), resume.getUuid());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
 }
