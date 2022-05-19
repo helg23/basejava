@@ -4,23 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextListSection extends AbstractSection{
-    private List<String> description = new ArrayList<>();
+    private final List<String> bullets;
 
-    public TextListSection(String name) {
-        super(name);
-    }
-
-    public List<String> getDescription() {
-        return description;
-    }
-
-    public void setDescription(List<String> description) {
-        this.description = description;
+    public TextListSection(SectionType type,List<String> bullets) {
+        super(type);
+        this.bullets=bullets;
     }
 
     @Override
     protected void printContent() {
-        for(String s : description){
+        for(String s : bullets){
             System.out.println(" * "+s);
         }
     }

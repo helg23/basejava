@@ -9,18 +9,18 @@ public class Participation {
     private final LocalDate endDate;
     private final String position;
     private final String description;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MM/yyyy");
 
     public Participation(String startDate,String endDate,String position,String description){
-        this.startDate = LocalDate.parse(startDate,formatter);
-        this.endDate = endDate.equals("") ? null : LocalDate.parse(endDate,formatter);
+        this.startDate = LocalDate.parse(startDate,INPUT_FORMAT);
+        this.endDate = endDate.equals("") ? null : LocalDate.parse(endDate,INPUT_FORMAT);
         this.position = position;
         this.description = description;
     }
 
     public void print(){
-        String endDateString = endDate == null ? "Cейчас" : endDate.toString();
-        System.out.println(startDate+"-"+endDateString+"\t\t"+position);
-        System.out.println(description+"\n");
+        String endDateString = endDate == null ? "Cейчас" : endDate.format(OUTPUT_FORMAT);
+        System.out.println(startDate.format(OUTPUT_FORMAT)+" - "+endDateString+"\t\t"+position);
     }
 }

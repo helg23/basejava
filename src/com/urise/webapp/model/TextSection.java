@@ -1,17 +1,10 @@
 package com.urise.webapp.model;
 
 public class TextSection extends AbstractSection{
-    private String description;
+    private final String description;
 
-    public TextSection(String name) {
-        super(name);
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public TextSection(SectionType type,String description) {
+        super(type);
         this.description = description;
     }
 

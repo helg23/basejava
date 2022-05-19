@@ -5,8 +5,8 @@ import java.util.List;
 public class ParticipationListSection extends AbstractSection{
     private final List<Organization> organizations;
 
-    public ParticipationListSection(String name,List<Organization> organizations) {
-        super(name);
+    public ParticipationListSection(SectionType type,List<Organization> organizations) {
+        super(type);
         this.organizations = organizations;
     }
 

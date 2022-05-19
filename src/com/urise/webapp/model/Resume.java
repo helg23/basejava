@@ -60,9 +60,11 @@ public class Resume implements Comparable<Resume> {
 
     public void print(){
         System.out.println("==="+fullName.toUpperCase(Locale.ROOT)+"===");
-        //for(Map.Entry<ContactType,String> contact : contacts.entrySet()){
-        //    System.out.println(contact.getKey().getTitle()+": "+contact.getValue());
-        //}
+        if (contacts != null){
+            for(Map.Entry<ContactType,String> contact : contacts.entrySet()){
+                System.out.println(contact.getKey().getTitle()+": "+contact.getValue());
+            }
+        }
         for(Map.Entry<SectionType,AbstractSection> section : sections.entrySet()){
             section.getValue().print();
         }
