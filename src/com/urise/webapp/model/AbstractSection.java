@@ -4,20 +4,17 @@ import java.util.Locale;
 
 public abstract class AbstractSection {
 
-    protected SectionType type;
+    protected String title;
 
-    public AbstractSection(SectionType type) {
-        this.type = type;
+    public AbstractSection(String title) {
+        this.title = title;
     }
 
-    public SectionType getType() {
-        return type;
+    public String getTitle() {
+        return title;
     }
 
-    protected void print(){
-        System.out.println("\n=="+type.getTitle().toUpperCase(Locale.ROOT)+"==");
-        printContent();
+    public String toString() {
+        return "\n==" + title.toUpperCase(Locale.ROOT) + "==\n";
     }
-
-    protected abstract void printContent();
 }

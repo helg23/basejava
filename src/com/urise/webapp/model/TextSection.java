@@ -1,15 +1,15 @@
 package com.urise.webapp.model;
 
-public class TextSection extends AbstractSection{
+public class TextSection extends AbstractSection {
     private final String description;
 
-    public TextSection(SectionType type,String description) {
-        super(type);
+    public TextSection(String title, String description) {
+        super(title);
         this.description = description;
     }
 
     @Override
-    protected void printContent() {
-        System.out.println(description);
+    public String toString() {
+        return super.toString() + description + "\n";
     }
 }

@@ -9,14 +9,14 @@ public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
-    private EnumMap<ContactType,String> contacts;
-    private EnumMap<SectionType,AbstractSection> sections;
+    private Map<ContactType, String> contacts;
+    private Map<SectionType, AbstractSection> sections;
 
-    public Resume(String fullName){
-        this(UUID.randomUUID().toString(),fullName);
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
-    public Resume(String uuid,String fullName) {
+    public Resume(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -25,29 +25,13 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
-    public String getFullName() {return fullName;}
+    public String getFullName() {
+        return fullName;
+    }
 
     @Override
     public int compareTo(Resume o) {
         return uuid.compareTo(o.uuid);
-    }
-
-    @Override
-    public String toString() {
-        return uuid + "-" + fullName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Resume)) return false;
-        Resume resume = (Resume) o;
-        return Objects.equals(getUuid(), resume.getUuid());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid);
     }
 
     public void setContacts(EnumMap<ContactType, String> contacts) {
@@ -58,15 +42,70 @@ public class Resume implements Comparable<Resume> {
         this.sections = sections;
     }
 
-    public void print(){
-        System.out.println("==="+fullName.toUpperCase(Locale.ROOT)+"===");
-        if (contacts != null){
-            for(Map.Entry<ContactType,String> contact : contacts.entrySet()){
-                System.out.println(contact.getKey().getTitle()+": "+contact.getValue());
+    public String toString() {
+        StringBuilder sb = new StringBuilder("===" + fullName.toUpperCase(Locale.ROOT) + "===");
+        if (contacts != null) {
+            for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
+                sb.append("\n").append(contact.getKey().getTitle()).append(": ").append(contact.getValue());
             }
         }
-        for(Map.Entry<SectionType,AbstractSection> section : sections.entrySet()){
-            section.getValue().print();
+        sb.append("\n");
+        for (Map.Entry<SectionType, AbstractSection> section : sections.entrySet()) {
+            sb.append(section.getValue());
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, contacts, sections);
+    }
+
+    public enum ContactType {
+        PHONE("Тел."),
+        SKYPE("Skype"),
+        EMAIL("Email"),
+        LINKEDIN("LinkedIn"),
+        GITHUB("GitHub"),
+        STACKOVERFLOW("Stack Overflow"),
+        HOMEPAGE("Личная страница");
+
+        private final String title;
+
+        ContactType(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
+
+    public enum SectionType {
+        PERSONAL("Личные качества"),
+        OBJECTIVE("Позиция"),
+        ACHIEVEMENT("Достижения"),
+        QUALIFICATIONS("Квалификация"),
+        EXPERIENCE("Опыт работы"),
+        EDUCATION("Образование");
+
+        private final String title;
+
+        SectionType(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
         }
     }
 }
