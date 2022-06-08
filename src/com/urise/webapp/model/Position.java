@@ -8,12 +8,11 @@ public class Position {
     private final LocalDate endDate;
     private final String position;
     private final String description;
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MM/yyyy");
 
-    public Position(String startDate, String endDate, String position, String description) {
-        this.startDate = LocalDate.parse(startDate, INPUT_FORMAT);
-        this.endDate = endDate.equals("") ? null : LocalDate.parse(endDate, INPUT_FORMAT);
+    public Position(LocalDate startDate, LocalDate endDate, String position, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.position = position;
         this.description = description;
     }
